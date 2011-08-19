@@ -1,0 +1,8 @@
+a.sortAsc {
+	padding-right: 1.5em;
+	background: url( '/img/up.gif') no-repeat right center;
+}
+a.sortDesc {
+	padding-right: 1.5em;
+	background: url( '/img/down.gif' ) no-repeat right center;
+}

@@ -1,5 +1,4 @@
-<?php
-/**
+<?php /**
  * Lithium: the most rad php framework
  *
  * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
@@ -7,9 +6,10 @@
  */
 
 /**
- * This bootstrap file contains class configuration for all aspects of globalizing your application,
- * including localization of text, validation rules, setting timezones and character inflections,
- * and identifying a user's locale.
+ * This bootstrap file contains class configuration for all aspects of
+ * globalizing your application, including localization of text, validation
+ * rules, setting timezones and character inflections, and identifying a user's
+ * locale.
  */
 use lithium\core\Libraries;
 use lithium\core\Environment;
@@ -30,48 +30,51 @@ date_default_timezone_set('UTC');
 /**
  * Adds globalization specific settings to the environment.
  *
- * The settings for the current locale, time zone and currency are kept as environment
- * settings. This allows for _centrally_ switching, _transparently_ setting and retrieving
- * globalization related settings.
+ * The settings for the current locale, time zone and currency are kept as
+ * environment settings. This allows for _centrally_ switching, _transparently_
+ * setting and retrieving globalization related settings.
  *
  * The environment settings are:
  *
  *  - `'locale'` The effective locale.
- *  - `'locales'` Application locales available mapped to names. The available locales are used
- *               to negotiate he effective locale, the names can be used i.e. when displaying
- *               a menu for choosing the locale to users.
+ *  - `'locales'` Application locales available mapped to names. The available
+ *				locales are used to negotiate he effective locale, the names
+ *				can be used i.e. when displaying a menu for choosing the locale
+ *				to users.
  */
 $locale = 'en';
-$locales = array('en' => 'English');
+$locales = array('en' => 'English', 'sv'=>'Something');
 
 Environment::set('production', compact('locale', 'locales'));
-Environment::set('development', compact('locale', 'locales'));
-Environment::set('test', array('locale' => 'en', 'locales' => array('en' => 'English')));
+Environment::set('development', compact('locale', 'locales')); Environment::set('test', array('locale' => 'en', 'locales' => array('en' => 'English')));
 
 /**
- * Globalization (g11n) catalog configuration.  The catalog allows for obtaining and
- * writing globalized data. Each configuration can be adjusted through the following settings:
+ * Globalization (g11n) catalog configuration.  The catalog allows for
+ * obtaining and writing globalized data. Each configuration can be adjusted
+ * through the following settings:
  *
- *   - `'adapter'` _string_: The name of a supported adapter. The builtin adapters are `Memory` (a
- *     simple adapter good for runtime data and testing), `Php`, `Gettext`, `Cldr` (for
- *     interfacing with Unicode's common locale data repository) and `Code` (used mainly for
- *     extracting message templates from source code).
+ *   - `'adapter'` _string_: The name of a supported adapter. The builtin
+ *		adapters are `Memory` (a simple adapter good for runtime data and
+ *		testing), `Php`, `Gettext`, `Cldr` (for interfacing with Unicode's
+ *		common locale data repository) and `Code` (used mainly for extracting
+ *		message templates from source code).
  *
- *   - `'path'` All adapters with the exception of the `Memory` adapter require a directory
- *     which holds the data.
+ *   - `'path'` All adapters with the exception of the `Memory` adapter require
+ *		a directory which holds the data.
  *
- *   - `'scope'` If you plan on using scoping i.e. for accessing plugin data separately you
- *     need to specify a scope for each configuration, except for those using the `Memory`,
- *     `Php` or `Gettext` adapter which handle this internally.
+ *   - `'scope'` If you plan on using scoping i.e. for accessing plugin data
+ *		separately you need to specify a scope for each configuration, except
+ *		for those using the `Memory`, `Php` or `Gettext` adapter which handle
+ *		this internally.
  */
 Catalog::config(array(
 	'runtime' => array(
 		'adapter' => 'Memory'
 	),
-	// 'app' => array(
-	// 	'adapter' => 'Gettext',
-	// 	'path' => Libraries::get(true, 'resources') . '/g11n'
-	// ),
+	#'app' => array( 'adapter' => 'Php', 'path' => Libraries::get(true, 'resources') . '/g11n/php' ),
+	'app' => array( 'adapter' => 'Php', 'path' => LITHIUM_APP_PATH . '/resources/g11n/php' ),
+#	'app' => array( 'adapter' => 'Gettext', 'path' => LITHIUM_APP_PATH . '/resources/g11n/po' ),
+	'code' => array( 'adapter' => 'Code', 'path' => LITHIUM_APP_PATH . '/views' ),
 	'lithium' => array(
 		'adapter' => 'Php',
 		'path' => LITHIUM_LIBRARY_PATH . '/lithium/g11n/resources/php'

@@ -18,6 +18,10 @@
  */
 use lithium\net\http\Router;
 use lithium\core\Environment;
+use app\extensions\route\Localized;
+
+Router::connect('/login', 'Sessions::add');
+Router::connect('/logout', 'Sessions::delete');
 
 /**
  * Here, we are connecting `'/'` (the base path) to controller called `'Pages'`,
@@ -27,7 +31,7 @@ use lithium\core\Environment;
  *
  * @see app\controllers\PagesController
  */
-Router::connect('/', 'Pages::view');
+Router::connect('/', 'Dashboards::view');
 
 /**
  * Connect the rest of `PagesController`'s URLs. This will route URLs like `/pages/about` to
@@ -57,8 +61,8 @@ if (!Environment::is('production')) {
  * is an integer, uncomment the routes below to enable URLs like `/posts/edit/1138`,
  * `/posts/view/1138.json`, etc.
  */
-// Router::connect('/{:controller}/{:action}/{:id:\d+}.{:type}', array('id' => null));
-// Router::connect('/{:controller}/{:action}/{:id:\d+}');
+#Router::connect('/{:controller}/{:action}/{:id:\d+}.{:type}', array('id' => null));
+#Router::connect('/{:controller}/{:action}/{:id:\d+}');
 
 /**
  * If you're using a document-oriented database, such as CouchDB or MongoDB, or another type of
@@ -66,6 +70,22 @@ if (!Environment::is('production')) {
  */
 // Router::connect('/{:controller}/{:action}/{:id:[0-9a-f]{24}}.{:type}', array('id' => null));
 // Router::connect('/{:controller}/{:action}/{:id:[0-9a-f]{24}}');
+
+/**
+ * Localize the url
+ */
+Router::connect(new Localized(array(
+    'template' => '/{:controller}/{:action}/{:id:[0-9]+}.{:type}',
+	'params' => array('id' => null)
+)));
+
+Router::connect(new Localized(array(
+	'template' => '/{:controller}/{:action}/{:id:[0-9]+}',
+)));
+
+Router::connect(new Localized(array(
+	'template' => '/{:controller}/{:action}/{:args}',
+)));
 
 /**
  * Finally, connect the default route. This route acts as a catch-all, intercepting requests in the
@@ -79,6 +99,6 @@ if (!Environment::is('production')) {
  * In almost all cases, custom routes should be added above this one, since route-matching works in
  * a top-down fashion.
  */
-Router::connect('/{:controller}/{:action}/{:args}');
+#Router::connect('/{:controller}/{:action}/{:args}');
 
 ?>
